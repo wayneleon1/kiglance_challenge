@@ -9,10 +9,12 @@ import {
   Container,
   Avatar,
   Grid,
+  TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import SearchIcon from "@mui/icons-material/Search";
 
 interface MultiStepModalProps {
   open: boolean;
@@ -55,8 +57,11 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
     useState<string>("");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [selectedColor, setSelectedColor] = useState<string>("#7C3AED");
+  const [selectedAudience, setSelectedAudience] = useState<string>("");
+  const [selectedCompanySize, setSelectedCompanySize] = useState<string>("");
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  const totalSteps = 3;
+  const totalSteps = 6;
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
   };
@@ -75,10 +80,14 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
   };
 
   const handleSubmit = () => {
-    // Handle form submission logic here
-    console.log("Form submitted");
-    // Move to the completion screen
-    setActiveStep(4);
+    console.log("Form submitted", {
+      responsibility: selectedResponsibility,
+      companySize: selectedCompanySize,
+      audience: selectedAudience,
+      interests: selectedInterests,
+      color: selectedColor,
+    });
+    setActiveStep(7);
   };
 
   const getStepContent = (step: number) => {
@@ -124,8 +133,311 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
             </Typography>
           </Box>
         );
-
       case 1:
+        return (
+          <Box sx={{ p: 3 }}>
+            <Typography
+              variant="h6"
+              sx={{ m: 2, fontWeight: "bold", textAlign: "center" }}
+            >
+              What is your main work responsibility?
+            </Typography>
+            <Grid container spacing={2}>
+              {[
+                ["Marketing", "IT"],
+                ["Customer Services", "Finance"],
+                ["Sales", "Owner/CEO"],
+                ["Design", "Education/Student"],
+                ["Product"],
+              ].map((row, rowIndex) => (
+                <Grid item xs={12} key={rowIndex}>
+                  <Grid container spacing={2}>
+                    {row.map((responsibility) => (
+                      <Grid
+                        item
+                        xs={row.length === 1 ? 12 : 6}
+                        key={responsibility}
+                      >
+                        <Button
+                          fullWidth
+                          onClick={() =>
+                            handleResponsibilitySelect(responsibility)
+                          }
+                          sx={{
+                            color: "text.primary",
+                            border: "1px solid #E5E7EB",
+                            borderRadius: "12px",
+                            p: 2,
+                            justifyContent: "center",
+                            textAlign: "center",
+                            bgcolor:
+                              selectedResponsibility === responsibility
+                                ? "#F3F4F6"
+                                : "transparent",
+                            "&:hover": {
+                              bgcolor: "#F3F4F6",
+                              border: "1px solid #D1D5DB",
+                            },
+                            textTransform: "none",
+                            height: "40px",
+                          }}
+                        >
+                          {responsibility}
+                        </Button>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        );
+      case 2:
+        return (
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h5" sx={{ mb: 4, textAlign: "center" }}>
+              What is your company size?
+            </Typography>
+            <Grid container spacing={2}>
+              {[
+                "Myself only",
+                "2-10 employees",
+                "11-50 employees",
+                "51-200 employees",
+                "201-500 employees",
+                "501-1000 employees",
+                "1001-5000 employees",
+                "5001-10,000 employees",
+                "10,000+ employees",
+              ].map((size, index) => (
+                <Grid item xs={index < 8 ? 6 : 12} key={size}>
+                  <Button
+                    fullWidth
+                    onClick={() => {
+                      setSelectedCompanySize(size);
+                      handleNext();
+                    }}
+                    sx={{
+                      border: "1px solid #E5E7EB",
+                      borderRadius: "12px",
+                      p: 2,
+                      color: "text.primary",
+                      bgcolor:
+                        selectedCompanySize === size
+                          ? "#F3F4F6"
+                          : "transparent",
+                      "&:hover": {
+                        bgcolor: "#F3F4F6",
+                        border: "1px solid #D1D5DB",
+                      },
+                      textTransform: "none",
+                      height: "30px",
+                    }}
+                  >
+                    {size}
+                  </Button>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        );
+      case 3:
+        return (
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h5" sx={{ mb: 4, textAlign: "center" }}>
+              Who is your target audience?
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {[
+                "Business (B2B)",
+                "Consumers (B2C)",
+                "Business and Consumers",
+              ].map((audience) => (
+                <Button
+                  key={audience}
+                  onClick={() => {
+                    setSelectedAudience(audience);
+                    handleNext();
+                  }}
+                  sx={{
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "12px",
+                    p: 1,
+                    color: "text.primary",
+                    bgcolor:
+                      selectedAudience === audience ? "#F3F4F6" : "transparent",
+                    "&:hover": {
+                      bgcolor: "#F3F4F6",
+                      border: "1px solid #D1D5DB",
+                    },
+                    textTransform: "none",
+                  }}
+                >
+                  {audience}
+                </Button>
+              ))}
+            </Box>
+          </Box>
+        );
+
+      case 4:
+        return (
+          <Box sx={{ p: 3 }}>
+            <Typography
+              variant="h6"
+              sx={{ mb: 2, fontWeight: "bold", textAlign: "center" }}
+            >
+              What are your product interests?
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ mb: 3, color: "text.secondary", textAlign: "center" }}
+            >
+              Choose three or more.
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 1.5,
+                mb: 3,
+                justifyContent: "center",
+              }}
+            >
+              {[
+                "SEO",
+                "Sales enablement",
+                "Email Marketing",
+                "Cross-Channel",
+                "Demand Generation",
+                "Max ch",
+                "Label",
+                "Demand",
+                "Max using 10 Tags",
+              ].map((interest) => (
+                <Button
+                  key={interest}
+                  onClick={() =>
+                    setSelectedInterests((prev) =>
+                      prev.includes(interest)
+                        ? prev.filter((i) => i !== interest)
+                        : [...prev, interest]
+                    )
+                  }
+                  sx={{
+                    borderRadius: "30px",
+                    border: "1px solid #D1D5DB",
+                    bgcolor: selectedInterests.includes(interest)
+                      ? "#E0E7FF"
+                      : "#F9FAFB",
+                    color: selectedInterests.includes(interest)
+                      ? "#4F46E5"
+                      : "text.primary",
+                    px: 3,
+                    py: 1.5,
+                    fontSize: "0.875rem",
+                    textTransform: "none",
+                    "&:hover": {
+                      bgcolor: selectedInterests.includes(interest)
+                        ? "#E0E7FF"
+                        : "#F3F4F6",
+                    },
+                  }}
+                >
+                  {interest}
+                </Button>
+              ))}
+            </Box>
+            <Button
+              sx={{
+                color: "#7C3AED",
+                textTransform: "none",
+                display: "block",
+                margin: "0 auto",
+              }}
+            >
+              Show more
+            </Button>
+          </Box>
+        );
+      case 5:
+        return (
+          <Box sx={{ px: 2 }}>
+            <Typography variant="h5" sx={{ mb: 1, textAlign: "center" }}>
+              Select 3+ products that you use
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{ mb: 1, textAlign: "center", color: "text.secondary" }}
+            >
+              Build your tech stack from the get go.
+            </Typography>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="Search products"
+              InputProps={{
+                startAdornment: (
+                  <SearchIcon sx={{ color: "text.secondary", mr: 1 }} />
+                ),
+              }}
+              sx={{ mb: 1 }}
+            />
+            <Typography variant="h6" sx={{ mb: 1 }}>
+              Products
+            </Typography>
+            <Box sx={{ height: "300", overflow: "auto" }}>
+              {[
+                "Google Analytics",
+                "Facebook Analytics",
+                "Twitter Analytics",
+                "Pinterest Analytics",
+              ].map((product, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Avatar
+                      src={`https://via.placeholder.com/40?text=${index + 1}`}
+                      sx={{ mr: 2 }}
+                    />
+                    <Typography>{product}</Typography>
+                  </Box>
+                  <IconButton
+                    onClick={() =>
+                      setSelectedProducts((prev) =>
+                        prev.includes(product)
+                          ? prev.filter((p) => p !== product)
+                          : [...prev, product]
+                      )
+                    }
+                  >
+                    {selectedProducts.includes(product) ? (
+                      <CheckIcon sx={{ color: "primary.main" }} />
+                    ) : (
+                      <Box
+                        sx={{
+                          width: 18,
+                          height: 18,
+                          border: "2px solid",
+                          borderColor: "text.secondary",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    )}
+                  </IconButton>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        );
+      case 6:
         return (
           <Box sx={{ p: 3 }}>
             <Typography
@@ -198,133 +510,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
             </Box>
           </Box>
         );
-
-      case 2:
-        return (
-          <Box sx={{ p: 3 }}>
-            <Typography
-              variant="h6"
-              sx={{ m: 2, fontWeight: "bold", textAlign: "center" }}
-            >
-              What is your main work responsibility?
-            </Typography>
-            <Grid container spacing={2}>
-              {[
-                ["Marketing", "IT"],
-                ["Customer Services", "Finance"],
-                ["Sales", "Owner/CEO"],
-                ["Design", "Education/Student"],
-                ["Product"],
-              ].map((row, rowIndex) => (
-                <Grid item xs={12} key={rowIndex}>
-                  <Grid container spacing={2}>
-                    {row.map((responsibility) => (
-                      <Grid
-                        item
-                        xs={row.length === 1 ? 12 : 6}
-                        key={responsibility}
-                      >
-                        <Button
-                          fullWidth
-                          onClick={() =>
-                            handleResponsibilitySelect(responsibility)
-                          }
-                          sx={{
-                            color: "text.primary",
-                            border: "1px solid #E5E7EB",
-                            borderRadius: "12px",
-                            p: 2,
-                            justifyContent: "center",
-                            textAlign: "center",
-                            bgcolor:
-                              selectedResponsibility === responsibility
-                                ? "#F3F4F6"
-                                : "transparent",
-                            "&:hover": {
-                              bgcolor: "#F3F4F6",
-                              border: "1px solid #D1D5DB",
-                            },
-                            textTransform: "none",
-                            height: "40px",
-                          }}
-                        >
-                          {responsibility}
-                        </Button>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        );
-
-      case 3:
-        return (
-          <Box sx={{ p: 3 }}>
-            <Typography
-              variant="h6"
-              sx={{ mb: 2, fontWeight: "bold", textAlign: "center" }}
-            >
-              What are your product interests?
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ mb: 3, color: "text.secondary", textAlign: "center" }}
-            >
-              Choose three or more.
-            </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 3 }}>
-              {[
-                "SEO",
-                "Sales enablement",
-                "Email Marketing",
-                "Cross-Channel",
-                "Demand Generation",
-                "Marketing Analytics",
-                "Content Marketing",
-                "Social Media",
-              ].map((interest) => (
-                <Button
-                  key={interest}
-                  onClick={() =>
-                    setSelectedInterests((prev) =>
-                      prev.includes(interest)
-                        ? prev.filter((i) => i !== interest)
-                        : [...prev, interest]
-                    )
-                  }
-                  sx={{
-                    borderRadius: "20px",
-                    border: "1px solid #E5E7EB",
-                    bgcolor: selectedInterests.includes(interest)
-                      ? "#F3F4F6"
-                      : "transparent",
-                    color: "text.primary",
-                    px: 2,
-                    py: 1,
-                    "&:hover": {
-                      bgcolor: "#F3F4F6",
-                    },
-                    textTransform: "none",
-                  }}
-                >
-                  {interest}
-                </Button>
-              ))}
-            </Box>
-            <Button
-              sx={{
-                color: "#7C3AED",
-                textTransform: "none",
-              }}
-            >
-              Show more
-            </Button>
-          </Box>
-        );
-
-      case 4:
+      case 7:
         return (
           <Box sx={{ textAlign: "center", p: 3 }}>
             <Avatar
@@ -353,7 +539,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
   };
 
   const renderNavigation = () => {
-    if (activeStep === 0 || activeStep === 4) return null;
+    if (activeStep === 0 || activeStep === 7) return null;
 
     const isLastStep = activeStep === totalSteps;
 
@@ -428,15 +614,15 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
             position: "relative",
             width: "100%",
             overflow: "hidden",
-            maxHeight: "450px",
-            height: "450px",
+            maxHeight: "480px",
+            height: "480px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
           }}
         >
           <div>
-            <div className="flex justify-between items-center px-2">
+            <div className="flex justify-between items-center mx-4">
               <TrendingUpIcon className="text-main" />
               <IconButton
                 onClick={handleClose}
@@ -447,13 +633,12 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
                 <CloseIcon />
               </IconButton>
             </div>
-
-            {activeStep !== 0 && activeStep !== 4 && (
+            {activeStep !== 0 && activeStep !== 7 && (
               <StepIndicator totalSteps={totalSteps} currentStep={activeStep} />
             )}
           </div>
 
-          <div className="flex-1  overflow-y-auto flex flex-col justify-center">
+          <div className="flex-1 overflow-y-auto flex flex-col justify-center">
             {getStepContent(activeStep)}
           </div>
           <div>{renderNavigation()}</div>
