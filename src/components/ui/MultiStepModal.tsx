@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from "react";
 import {
   Box,
@@ -11,6 +12,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 
 interface MultiStepModalProps {
   open: boolean;
@@ -27,7 +29,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
   currentStep,
 }) => {
   return (
-    <Box sx={{ width: "80%", px: 3, pt: 3 }}>
+    <Box sx={{ width: "100%", mt: 1 }}>
       <Box sx={{ display: "flex", gap: 1 }}>
         {[...Array(totalSteps)].map((_, index) => (
           <Box
@@ -115,7 +117,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
                 width: "200px",
               }}
             >
-              Let&apos;s do it
+              Let's do it
             </Button>
             <Typography variant="body2" sx={{ mt: 2, color: "text.secondary" }}>
               This will only take a minute.
@@ -202,7 +204,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
           <Box sx={{ p: 3 }}>
             <Typography
               variant="h6"
-              sx={{ mb: 4, fontWeight: "bold", textAlign: "center" }}
+              sx={{ m: 2, fontWeight: "bold", textAlign: "center" }}
             >
               What is your main work responsibility?
             </Typography>
@@ -243,7 +245,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
                               border: "1px solid #D1D5DB",
                             },
                             textTransform: "none",
-                            height: "56px",
+                            height: "40px",
                           }}
                         >
                           {responsibility}
@@ -358,7 +360,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
     return (
       <Box
         sx={{
-          p: 3,
+          p: 2,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -426,27 +428,35 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
             position: "relative",
             width: "100%",
             overflow: "hidden",
+            maxHeight: "450px",
+            height: "450px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
-          <IconButton
-            onClick={handleClose}
-            sx={{
-              position: "absolute",
-              right: 16,
-              top: 16,
-              color: "text.secondary",
-              zIndex: 1,
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
+          <div>
+            <div className="flex justify-between items-center px-2">
+              <TrendingUpIcon className="text-main" />
+              <IconButton
+                onClick={handleClose}
+                sx={{
+                  color: "text.secondary",
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
 
-          {activeStep !== 0 && activeStep !== 4 && (
-            <StepIndicator totalSteps={totalSteps} currentStep={activeStep} />
-          )}
+            {activeStep !== 0 && activeStep !== 4 && (
+              <StepIndicator totalSteps={totalSteps} currentStep={activeStep} />
+            )}
+          </div>
 
-          {getStepContent(activeStep)}
-          {renderNavigation()}
+          <div className="flex-1  overflow-y-auto flex flex-col justify-center">
+            {getStepContent(activeStep)}
+          </div>
+          <div>{renderNavigation()}</div>
         </Box>
       </Container>
     </Modal>
