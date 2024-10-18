@@ -14,7 +14,7 @@ const Counter = () => {
       <h1 className="text-2xl font-bold">Counter: {count}</h1>
       <div className="space-x-2">
         <Button
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          className="px-4 py-2 bg-main text-white rounded"
           onClick={() => dispatch(increment())}
         >
           Increment
