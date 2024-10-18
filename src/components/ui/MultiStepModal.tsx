@@ -61,7 +61,11 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
   const [selectedCompanySize, setSelectedCompanySize] = useState<string>("");
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  const totalSteps = 6;
+  const [bio, setBio] = useState("");
+  const [title, setTitle] = useState("");
+  const [location, setLocation] = useState("");
+
+  const totalSteps = 7;
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
   };
@@ -87,7 +91,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
       interests: selectedInterests,
       color: selectedColor,
     });
-    setActiveStep(7);
+    setActiveStep(8);
   };
 
   const getStepContent = (step: number) => {
@@ -512,6 +516,71 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
         );
       case 7:
         return (
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h5" sx={{ mb: 2, textAlign: "center" }}>
+              Introduce yourself to the community
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{ mb: 3, textAlign: "center", color: "text.secondary" }}
+            >
+              Let members learn more about you.
+            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+              <Avatar
+                src="/path-to-jane-doe-image.jpg"
+                sx={{ width: 60, height: 60, mr: 2 }}
+              />
+              <Typography variant="h6">Jane Doe</Typography>
+            </Box>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="Marketing and Sales Tech lover"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              sx={{ mb: 2 }}
+              InputProps={{
+                endAdornment: (
+                  <Typography
+                    variant="caption"
+                    sx={{ color: "text.secondary" }}
+                  >
+                    {bio.length}/90
+                  </Typography>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="CEO"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              sx={{ mb: 2 }}
+              InputProps={{
+                endAdornment: (
+                  <Typography
+                    variant="caption"
+                    sx={{ color: "text.secondary" }}
+                  >
+                    {title.length}/40
+                  </Typography>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="Location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </Box>
+        );
+
+      case 8:
+        return (
           <Box sx={{ textAlign: "center", p: 3 }}>
             <Avatar
               sx={{
@@ -539,7 +608,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
   };
 
   const renderNavigation = () => {
-    if (activeStep === 0 || activeStep === 7) return null;
+    if (activeStep === 0 || activeStep === 8) return null;
 
     const isLastStep = activeStep === totalSteps;
 
@@ -633,7 +702,7 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
                 <CloseIcon />
               </IconButton>
             </div>
-            {activeStep !== 0 && activeStep !== 7 && (
+            {activeStep !== 0 && activeStep !== 8 && (
               <StepIndicator totalSteps={totalSteps} currentStep={activeStep} />
             )}
           </div>
