@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+"use client";
 import React, { useState } from "react";
 import {
   Box,
@@ -15,6 +16,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import SearchIcon from "@mui/icons-material/Search";
+
+import { useResponsibilities } from "@/hooks/useResponsibilities";
+import { Responsibility } from "@/types/responsibilitytypes";
 
 interface MultiStepModalProps {
   open: boolean;
@@ -52,6 +56,8 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
   open,
   handleClose,
 }) => {
+  const { responsibilities, loading, error } = useResponsibilities();
+
   const [activeStep, setActiveStep] = useState(0);
   const [selectedResponsibility, setSelectedResponsibility] =
     useState<string>("");
@@ -146,56 +152,47 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
             >
               What is your main work responsibility?
             </Typography>
-            <Grid container spacing={2}>
-              {[
-                ["Marketing", "IT"],
-                ["Customer Services", "Finance"],
-                ["Sales", "Owner/CEO"],
-                ["Design", "Education/Student"],
-                ["Product"],
-              ].map((row, rowIndex) => (
-                <Grid item xs={12} key={rowIndex}>
-                  <Grid container spacing={2}>
-                    {row.map((responsibility) => (
-                      <Grid
-                        item
-                        xs={row.length === 1 ? 12 : 6}
-                        key={responsibility}
+            {loading && <Typography>Loading...</Typography>}
+            {error && <Typography>Error loading responsibilities.</Typography>}
+            {responsibilities && (
+              <Grid container spacing={2}>
+                {responsibilities.map(
+                  (responsibility: Responsibility, index: number) => (
+                    <Grid item xs={6} key={index}>
+                      <Button
+                        fullWidth
+                        onClick={() =>
+                          handleResponsibilitySelect(responsibility.id)
+                        }
+                        sx={{
+                          color: "text.primary",
+                          border: "1px solid #E5E7EB",
+                          borderRadius: "12px",
+                          p: 2,
+                          justifyContent: "center",
+                          textAlign: "center",
+                          bgcolor:
+                            selectedResponsibility === responsibility.id
+                              ? "#F3F4F6"
+                              : "transparent",
+                          "&:hover": {
+                            bgcolor: "#F3F4F6",
+                            border: "1px solid #D1D5DB",
+                          },
+                          textTransform: "none",
+                          height: "40px",
+                        }}
                       >
-                        <Button
-                          fullWidth
-                          onClick={() =>
-                            handleResponsibilitySelect(responsibility)
-                          }
-                          sx={{
-                            color: "text.primary",
-                            border: "1px solid #E5E7EB",
-                            borderRadius: "12px",
-                            p: 2,
-                            justifyContent: "center",
-                            textAlign: "center",
-                            bgcolor:
-                              selectedResponsibility === responsibility
-                                ? "#F3F4F6"
-                                : "transparent",
-                            "&:hover": {
-                              bgcolor: "#F3F4F6",
-                              border: "1px solid #D1D5DB",
-                            },
-                            textTransform: "none",
-                            height: "40px",
-                          }}
-                        >
-                          {responsibility}
-                        </Button>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
-              ))}
-            </Grid>
+                        {responsibility.name}
+                      </Button>
+                    </Grid>
+                  )
+                )}
+              </Grid>
+            )}
           </Box>
         );
+
       case 2:
         return (
           <Box sx={{ p: 3 }}>
