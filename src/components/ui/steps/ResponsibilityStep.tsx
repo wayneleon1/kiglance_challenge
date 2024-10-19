@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import { Box, Typography, Grid, Button, CircularProgress } from "@mui/material";
 import { useResponsibilities } from "@/hooks/useResponsibilities";
 import { Responsibility } from "@/types/responsibilitytypes";
 
@@ -21,8 +21,26 @@ const ResponsibilityStep: React.FC<ResponsibilityStepProps> = ({
     onNext();
   };
 
-  if (loading) return <Typography>Loading...</Typography>;
-  if (error) return <Typography>Error loading responsibilities.</Typography>;
+  if (loading) {
+    return (
+      <Box sx={{ p: 3, textAlign: "center" }}>
+        <CircularProgress />
+        <Typography variant="body2" sx={{ mt: 2 }}>
+          Loading responsibilities...
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 3, textAlign: "center" }}>
+        <Typography variant="body2" sx={{ color: "error.main" }}>
+          Error fetching responsibilities: {error}
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: 3 }}>

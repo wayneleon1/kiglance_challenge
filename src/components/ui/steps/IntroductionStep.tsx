@@ -1,4 +1,3 @@
-// IntroductionStep.tsx
 import React from "react";
 import { Box, Typography, TextField, Avatar } from "@mui/material";
 

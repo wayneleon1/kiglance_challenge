@@ -1,4 +1,3 @@
-// ProductsStep.tsx
 import React from "react";
 import { Box, Typography, TextField, Avatar, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";

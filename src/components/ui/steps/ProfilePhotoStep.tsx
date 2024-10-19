@@ -1,4 +1,3 @@
-// ProfilePhotoStep.tsx
 import React from "react";
 import { Box, Typography, Button, IconButton } from "@mui/material";
 
