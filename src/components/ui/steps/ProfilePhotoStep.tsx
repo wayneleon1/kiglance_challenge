@@ -33,7 +33,7 @@ const colors = [
   { hex: "#FCD34D", label: "Yellow" },
 ];
 
-const SelectImageButton = styled(Button)(({ theme }) => ({
+const SelectImageButton = styled(Button)({
   padding: "10px 20px",
   borderRadius: "50px",
   border: "1px solid #E5E7EB",
@@ -45,20 +45,20 @@ const SelectImageButton = styled(Button)(({ theme }) => ({
     backgroundColor: "#F9FAFB",
     boxShadow: "none",
   },
-}));
+});
 
-const ColorButton = styled(IconButton)(({ theme }) => ({
+const ColorButton = styled(IconButton)({
   width: 32,
   height: 32,
   padding: 0,
-  margin: theme.spacing(0.5),
+  margin: "4px",
   border: "none",
   "&:hover": {
     transform: "scale(1.1)",
   },
-}));
+});
 
-const AvatarPreview = styled(Box)(({ theme }) => ({
+const AvatarPreview = styled(Box)({
   width: 120,
   height: 120,
   borderRadius: "50%",
@@ -68,8 +68,8 @@ const AvatarPreview = styled(Box)(({ theme }) => ({
   fontSize: "3.5rem",
   fontWeight: 500,
   color: "white",
-  marginBottom: theme.spacing(4),
-}));
+  marginBottom: "32px",
+});
 
 const ProfilePhotoStep: React.FC<ProfilePhotoStepProps> = ({
   formData,
