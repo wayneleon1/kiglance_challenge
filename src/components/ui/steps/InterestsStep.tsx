@@ -77,8 +77,8 @@ const InterestsStep: React.FC<InterestsStepProps> = ({
               color: formData.interests.includes(interest.name)
                 ? "#4F46E5"
                 : "text.primary",
-              px: 3,
-              py: 1.5,
+              px: 2,
+              py: 1,
               fontSize: "0.875rem",
               textTransform: "none",
               "&:hover": {

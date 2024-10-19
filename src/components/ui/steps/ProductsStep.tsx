@@ -1,7 +1,15 @@
-import React from "react";
-import { Box, Typography, TextField, Avatar, IconButton } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  Avatar,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CheckIcon from "@mui/icons-material/Check";
+import { useProducts } from "@/hooks/useProducts";
 
 interface ProductsStepProps {
   formData: { products: string[] };
@@ -12,19 +20,35 @@ const ProductsStep: React.FC<ProductsStepProps> = ({
   formData,
   updateFormData,
 }) => {
-  const products = [
-    "Google Analytics",
-    "Facebook Analytics",
-    "Twitter Analytics",
-    "Pinterest Analytics",
-  ];
+  const { products, loading, error } = useProducts();
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const toggleProduct = (product: string) => {
-    const newProducts = formData.products.includes(product)
-      ? formData.products.filter((p) => p !== product)
-      : [...formData.products, product];
+  const toggleProduct = (productName: string) => {
+    const newProducts = formData.products.includes(productName)
+      ? formData.products.filter((p) => p !== productName)
+      : [...formData.products, productName];
     updateFormData("products", newProducts);
   };
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 3, textAlign: "center" }}>
+        <Typography color="error">Error: {error}</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ px: 2 }}>
@@ -41,6 +65,8 @@ const ProductsStep: React.FC<ProductsStepProps> = ({
         fullWidth
         variant="outlined"
         placeholder="Search products"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         InputProps={{
           startAdornment: (
             <SearchIcon sx={{ color: "text.secondary", mr: 1 }} />
@@ -52,9 +78,9 @@ const ProductsStep: React.FC<ProductsStepProps> = ({
         Products
       </Typography>
       <Box sx={{ height: "300px", overflow: "auto" }}>
-        {products.map((product, index) => (
+        {filteredProducts.map((product) => (
           <Box
-            key={index}
+            key={product.id}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -63,14 +89,11 @@ const ProductsStep: React.FC<ProductsStepProps> = ({
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Avatar
-                src={`https://via.placeholder.com/40?text=${index + 1}`}
-                sx={{ mr: 2 }}
-              />
-              <Typography>{product}</Typography>
+              <Avatar src={product.image} sx={{ mr: 2 }} />
+              <Typography>{product.name}</Typography>
             </Box>
-            <IconButton onClick={() => toggleProduct(product)}>
-              {formData.products.includes(product) ? (
+            <IconButton onClick={() => toggleProduct(product.name)}>
+              {formData.products.includes(product.name) ? (
                 <CheckIcon sx={{ color: "primary.main" }} />
               ) : (
                 <Box
