@@ -22,7 +22,7 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const pathname = usePathname();
 
-  const handleMenuOpen = (event) => {
+  const handleMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 

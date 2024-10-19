@@ -14,7 +14,7 @@ const ProductsStep: React.FC<ProductsStepProps> = ({
   formData,
   updateFormData,
 }) => {
-  const { products, loading, error } = useProducts();
+  const { products } = useProducts();
   const [searchTerm, setSearchTerm] = useState("");
 
   const toggleProduct = (productName: string) => {
