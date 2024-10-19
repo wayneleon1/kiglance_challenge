@@ -1,4 +1,3 @@
-// CompanySizeStep.tsx
 import React from "react";
 import { Box, Typography, Grid, Button } from "@mui/material";
 
