@@ -20,11 +20,6 @@ interface MultiStepModalProps {
   handleClose: () => void;
 }
 
-interface MultiStepModalProps {
-  open: boolean;
-  handleClose: () => void;
-}
-
 const MultiStepModal: React.FC<MultiStepModalProps> = ({
   open,
   handleClose,
@@ -125,17 +120,16 @@ const MultiStepModal: React.FC<MultiStepModalProps> = ({
         justifyContent: "center",
       }}
     >
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" sx={{ px: { xs: 0 } }}>
         <Box
           sx={{
             bgcolor: "background.paper",
-            borderRadius: "16px",
+            borderRadius: { xs: 0, md: "16px" },
             boxShadow: 24,
             position: "relative",
-            width: "100%",
-            overflow: "hidden",
-            maxHeight: "480px",
-            height: "480px",
+            width: { xs: "100%", md: "100%" },
+            maxHeight: { xs: "100vh", md: "480px" },
+            height: { xs: "100vh", md: "480px" },
             display: "flex",
             flexDirection: "column",
           }}
